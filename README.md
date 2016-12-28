@@ -1,5 +1,8 @@
 # SuperOCR
+
 SpringBoot + Tesseract + Tess4J
+
+一个基于Tesseract依靠Tess4J通过JNA的方式实现的ORM
 
 #安装 Tesseract
 
