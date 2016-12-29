@@ -2,13 +2,12 @@ package cn.com.wenyi.sprocr.controller;
 
 import cn.com.wenyi.sprocr.service.HttpService;
 import cn.com.wenyi.sprocr.service.OcrService;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
+import cn.com.wenyi.sprocr.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,21 +26,14 @@ public class ImageController {
     @Autowired
     HttpService httpService;
 
-    @RequestMapping(value = "url",method = RequestMethod.GET)
+    @RequestMapping(value = "url", method = RequestMethod.GET)
     public Object readByUrl(@RequestParam(value = "imageUrl") String imgeUrl) {
-        File imageFile = new File(httpService.request(imgeUrl));
-        return ocrService.image2word(imageFile);
+        return ocrService.image2word(FileUtil.mkFile(httpService.request(imgeUrl), String.valueOf(System.currentTimeMillis()), ".png"));
     }
 
-    @RequestMapping(value = "file",method = RequestMethod.POST)
+    @RequestMapping(value = "file", method = RequestMethod.POST)
     public Object readByFile(@RequestParam("file") MultipartFile imageFile) {
         logger.info("super/file");
-        File newImageFile = null;
-        try {
-            newImageFile = new File(httpService.mkFile(imageFile.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ocrService.image2word(newImageFile);
+        return ocrService.image2word(FileUtil.mkFile(imageFile));
     }
 }

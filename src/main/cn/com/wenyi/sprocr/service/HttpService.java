@@ -17,45 +17,11 @@ import java.net.URL;
 @Service
 public class HttpService {
 
-    public static String filePath = "img/";
     static private Logger logger = LoggerFactory.getLogger(HttpService.class);
 
-    public String mkFile(InputStream inputStream) {
-        OutputStream outputStream = null;
-        String outputFileName =  filePath + String.valueOf(System.currentTimeMillis()) + ".png";
-        try {
-
-
-            outputStream =new FileOutputStream(new File(outputFileName));
-
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            while ((read = inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
-            }
-        }  catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
-            if (outputStream !=null) try {
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        logger.info("mkfile:{}",outputFileName);
-        return outputFileName;
-
-    }
-
-    public String request(String imageUrl) {
+    public InputStream request(String imageUrl) {
         InputStream inputStream = null;
-        OutputStream outputStream = null;
         HttpURLConnection httpURLConnection = null;
-        String outputFileName = "";
-        String filePath = "img/";
-
         try {
             URL url = new URL(imageUrl);
             httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -70,7 +36,6 @@ public class HttpService {
                 // 从服务器返回一个输入流
                 inputStream = httpURLConnection.getInputStream();
             }
-            return mkFile(inputStream);
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -78,6 +43,7 @@ public class HttpService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return "";
+        return inputStream;
+
     }
 }

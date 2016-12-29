@@ -17,7 +17,7 @@ public class TesseractUtil {
     public static File tessDataFolder = LoadLibs.extractTessResources("tessdata");
 
     public static ITesseract getInstance() {
-        return instance == null ? new Tesseract():instance;
+        return instance == null ? new Tesseract() : instance;
     }
 
     public static String doOCR(File imageFile) {
