@@ -1,5 +1,8 @@
 package cn.com.wenyi.sprocr.service;
 
+import cn.com.wenyi.sprocr.controller.ImageController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import sun.net.www.http.HttpClient;
 
@@ -15,6 +18,7 @@ import java.net.URL;
 public class HttpService {
 
     public static String filePath = "img/";
+    static private Logger logger = LoggerFactory.getLogger(HttpService.class);
 
     public String mkFile(InputStream inputStream) {
         OutputStream outputStream = null;
@@ -40,6 +44,7 @@ public class HttpService {
                 e.printStackTrace();
             }
         }
+        logger.info("mkfile:{}",outputFileName);
         return outputFileName;
 
     }

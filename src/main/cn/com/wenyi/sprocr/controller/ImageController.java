@@ -3,6 +3,8 @@ package cn.com.wenyi.sprocr.controller;
 import cn.com.wenyi.sprocr.service.HttpService;
 import cn.com.wenyi.sprocr.service.OcrService;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +20,8 @@ import java.io.IOException;
 @RequestMapping("super")
 public class ImageController {
 
+    static private Logger logger = LoggerFactory.getLogger(ImageController.class);
+
     @Autowired
     OcrService ocrService;
     @Autowired
@@ -31,6 +35,7 @@ public class ImageController {
 
     @RequestMapping(value = "file",method = RequestMethod.POST)
     public Object readByFile(@RequestParam("file") MultipartFile imageFile) {
+        logger.info("super/file");
         File newImageFile = null;
         try {
             newImageFile = new File(httpService.mkFile(imageFile.getInputStream()));
