@@ -1,6 +1,7 @@
 package cn.com.wenyi.sprocr.controller;
 
 import cn.com.wenyi.sprocr.service.HttpService;
+import cn.com.wenyi.sprocr.service.ImageService;
 import cn.com.wenyi.sprocr.service.OcrService;
 import cn.com.wenyi.sprocr.util.FileUtil;
 import org.slf4j.Logger;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
@@ -26,6 +29,8 @@ public class ImageController {
     OcrService ocrService;
     @Autowired
     HttpService httpService;
+    @Autowired
+    ImageService imageService;
 
     @RequestMapping(value = "url", method = RequestMethod.GET)
     public Object readByUrl(@RequestParam(value = "imageUrl") String imgeUrl) {
@@ -35,13 +40,6 @@ public class ImageController {
     @RequestMapping(value = "file", method = RequestMethod.POST)
     public Object readByFile(@RequestParam("file") MultipartFile imageFile) {
         logger.info("super/file");
-        FileUtil.mkFile(imageFile);
-        String result = "";
-        try {
-            result =  ocrService.image2word(ImageIO.read(imageFile.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
+        return ocrService.image2word(FileUtil.mkFile(imageFile));
     }
 }
