@@ -59,6 +59,6 @@ public class FileUtil {
         } else {
             type = "." + fileType;
         }
-        return (path + originalFileName + "_" + String.valueOf(System.currentTimeMillis()) + type);
+        return (path + String.valueOf(System.currentTimeMillis()) + "_" +  originalFileName);
     }
 }

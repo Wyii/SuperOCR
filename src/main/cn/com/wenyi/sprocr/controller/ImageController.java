@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
@@ -34,6 +35,13 @@ public class ImageController {
     @RequestMapping(value = "file", method = RequestMethod.POST)
     public Object readByFile(@RequestParam("file") MultipartFile imageFile) {
         logger.info("super/file");
-        return ocrService.image2word(FileUtil.mkFile(imageFile));
+        FileUtil.mkFile(imageFile);
+        String result = "";
+        try {
+            result =  ocrService.image2word(ImageIO.read(imageFile.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
