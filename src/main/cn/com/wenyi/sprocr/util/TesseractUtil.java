@@ -24,10 +24,12 @@ public class TesseractUtil {
     }
 
     public static String doOCR(File file) {
+        ITesseract instance = getInstance();  // JNA Interface Mapping
+        instance.setDatapath(tessDataFolder.getParent());
         String result = "";
         try {
-            result = doOCR(ImageIO.read(file));
-        } catch (IOException e) {
+            result = instance.doOCR(file);
+        } catch (TesseractException e) {
             e.printStackTrace();
         }
         return result;

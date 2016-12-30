@@ -15,16 +15,30 @@ public class FileUtil {
         String originalFileName = multipartFile.getOriginalFilename();
         String fileType = multipartFile.getContentType();
         try {
-            return mkFile(multipartFile.getInputStream(), originalFileName, fileType);
+            return mkFile(multipartFile.getBytes(), originalFileName);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static File mkFile(InputStream inputStream, String originalFileName, String fileType) {
+    public static File mkFile(byte[] bytes,String originalFileName) {
+        File file = new File(fileNameGenerator(originalFileName));
+        try {
+            FileOutputStream writer = new FileOutputStream(file);
+            writer.write(bytes);
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    public static File mkFile(InputStream inputStream, String originalFileName) {
         OutputStream outputStream = null;
-        File file = new File(fileNameGenerator(originalFileName, fileType));
+        File file = new File(fileNameGenerator(originalFileName));
         try {
             outputStream = new FileOutputStream(file);
             int read = 0;
@@ -50,15 +64,7 @@ public class FileUtil {
      * gendrator a file via MultipartFile
      * fileType like : image/png
      */
-    private static String fileNameGenerator(String originalFileName, String fileType) {
-        String separator = "/";
-        String type = ".png";
-        if (fileType.contains(separator)) {
-            String[] types = fileType.split(separator, 2);
-            type = "." + types[1];
-        } else {
-            type = "." + fileType;
-        }
+    private static String fileNameGenerator(String originalFileName) {
         return (path + String.valueOf(System.currentTimeMillis()) + "_" +  originalFileName);
     }
 }
