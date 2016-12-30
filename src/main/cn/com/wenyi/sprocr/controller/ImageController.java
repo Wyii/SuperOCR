@@ -56,7 +56,6 @@ public class ImageController {
 
     @RequestMapping(value = "base64",method = RequestMethod.POST)
     public Object readByFile(HttpServletResponse response, @RequestBody String base64Str) {
-        logger.info("super/base64");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Content-Type", "charset=utf-8");
         BASE64Decoder dBase64 = new BASE64Decoder();
@@ -64,9 +63,8 @@ public class ImageController {
 //            byte[] base64 = DatatypeConverter.parseBase64Binary(URLDecoder.decode(base64Str, "UTF-8").split("base64,")[1]);
             String goodStr = URLDecoder.decode(base64Str, "UTF-8").split("base64,")[1].replace(" ","+");
             byte[] base64 =  dBase64.decodeBuffer(goodStr);
-            logger.info(goodStr);
-            return ocrService.image2word(FileUtil.mkFile(base64,"xxx.png"));
-//            return ocrService.image2word(ImageIO.read(new ByteArrayInputStream(base64)));
+//            return ocrService.image2word(FileUtil.mkFile(base64,"xxx.png"));
+            return ocrService.image2word(ImageIO.read(new ByteArrayInputStream(base64)));
         } catch (IOException e) {
             e.printStackTrace();
         }
