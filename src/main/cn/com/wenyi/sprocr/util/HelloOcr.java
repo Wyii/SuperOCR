@@ -89,12 +89,12 @@ public class HelloOcr {
     public static void main(String[] args) {
         // System.setProperty("jna.library.path", "32".equals(System.getProperty("sun.arch.data.model")) ? "lib/win32-x86" : "lib/win32-x86-64");
 
-        File imageFile = new File("img/test2.png");
+        File imageFile = new File("img/test4.png");
 
-        String base64 = encodeImgageToBase64(imageFile);
-        logger.info(base64);
-        decodeBase64ToImage(base64, "img/", "truePNG2.png");
-        File imageFile2 = new File("img/truePNG2.png");
+//        String base64 = encodeImgageToBase64(imageFile);
+//        logger.info(base64);
+//        decodeBase64ToImage(base64, "img/", "truePNG2.png");
+//        File imageFile2 = new File("img/truePNG2.png");
 
         ITesseract instance = new Tesseract();  // JNA Interface Mapping
         // ITesseract instance = new Tesseract1(); // JNA Direct Mapping
@@ -102,7 +102,7 @@ public class HelloOcr {
         instance.setDatapath(tessDataFolder.getParent());
 
         try {
-            String result = instance.doOCR(imageFile2);
+            String result = instance.doOCR(imageFile);
             System.out.println(result);
         } catch (TesseractException e) {
             System.err.println(e.getMessage());
